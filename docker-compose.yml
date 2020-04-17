@@ -1,0 +1,55 @@
+version: '3'
+services:
+  postgres:
+    restart: always
+    image: 'postgres:latest'
+    # Added so that postgres starts
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+  redis:
+    image: 'redis:latest'
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '1000:80'
+  api:
+    # stdin_open: true
+    # Added restart, because server looks for porstgres before postgres runs
+    restart: on-failure
+    build:
+      # Which dockerfile to use and from which folder
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      # No files in /app/node_modules should be changed or uploaded from host
+      # while all other files in /app folder should be taken from host folder ./server
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+  client:
+    # Some bug fix for server to work properly
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  worker:
+    restart: on-failure
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
