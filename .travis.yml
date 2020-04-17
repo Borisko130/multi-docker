@@ -25,4 +25,5 @@ after_success:
   -docker push boryslavkrymeniuk/multi-server
   -docker push boryslavkrymeniuk/multi-worker
   -docker push boryslavkrymeniuk/multi-nginx
+  
 
