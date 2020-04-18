@@ -11,7 +11,7 @@ before_install:
   - docker build -t boryslavkrymeniuk/react-test -f ./client/Dockerfile.dev ./client
   
 script:
-  - docker run boryslavkrymeniuk/react-test npm run test -- --coverage --watchAll=fal
+  - docker run boryslavkrymeniuk/react-test npm run test -- --coverage --watchAll=false
   
 after_success:
   - docker build -t boryslavkrymeniuk/multi-client ./client
