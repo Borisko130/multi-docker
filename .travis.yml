@@ -1,4 +1,7 @@
 sudo: required
+#branches:
+#  only:
+#  - master
 services:
   - docker
 before_install:
@@ -13,9 +16,9 @@ after_success:
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and put them to the Docker Hub
-  -docker push boryslavkrymeniuk/multi-client
-  -docker push boryslavkrymeniuk/multi-server
-  -docker push boryslavkrymeniuk/multi-worker
-  -docker push boryslavkrymeniuk/multi-nginx
+  - docker push boryslavkrymeniuk/multi-client
+  - docker push boryslavkrymeniuk/multi-server
+  - docker push boryslavkrymeniuk/multi-worker
+  - docker push boryslavkrymeniuk/multi-nginx
   
 
