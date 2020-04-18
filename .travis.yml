@@ -1,13 +1,18 @@
 sudo: required
-#branches:
-#  only:
-#  - master
+
+branches:
+  only:
+  - master
+
 services:
   - docker
+  
 before_install:
   - docker build -t boryslavkrymeniuk/react-test -f ./client/Dockerfile.dev ./client
+  
 script:
-  - docker run boryslavkrymeniuk/react-test npm run test -- --coverage --watchAll=false
+  - docker run boryslavkrymeniuk/react-test npm run test -- --coverage --watchAll=fal
+  
 after_success:
   - docker build -t boryslavkrymeniuk/multi-client ./client
   - docker build -t boryslavkrymeniuk/multi-server ./server
